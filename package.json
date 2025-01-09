@@ -18,6 +18,5 @@
   },
   "dependencies": {
     "electron-settings": "^4.0.4",
-    "electron-store": "^10.0.0"
   }
 }
