@@ -1,0 +1,23 @@
+{
+  "name": "atlyss-save-editor",
+  "version": "1.0.0",
+  "description": "Simple save manager for ATLYSS",
+  "main": "./build/index.js",
+  "scripts": {
+    "start": "tsc && electron ./build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "nephh",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "electron": "^33.3.1",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "electron-settings": "^4.0.4",
+    "electron-store": "^10.0.0"
+  }
+}
