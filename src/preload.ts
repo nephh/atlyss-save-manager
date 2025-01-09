@@ -1,6 +1,4 @@
-// Preload script is unable to be ran as an ESM module,
-// so we need to use require
-const { contextBridge, ipcRenderer } = require("electron");
+import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("api", {
   getCharData: () => ipcRenderer.invoke("get-char-data"),
