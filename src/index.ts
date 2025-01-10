@@ -2,6 +2,7 @@ import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import { readFileSync, existsSync, mkdirSync, writeFile } from "fs";
 import { join } from "node:path";
 import settings from "electron-settings";
+import { readdirSync } from "fs";
 
 let win: BrowserWindow;
 
@@ -27,8 +28,6 @@ app.whenReady().then(() => {
 
   ipcMain.handle("get-char-data", async () => {
     let dir = await settings.get("directory.path");
-    console.log("Directory:", dir);
-    console.log("Settings file: ", settings.file());
 
     if (!dir) {
       const directory = dialog.showOpenDialogSync({
@@ -46,7 +45,9 @@ app.whenReady().then(() => {
       });
     }
 
-    return getChar(dir.toString(), 1);
+    const allChars = getCharFiles(dir.toString());
+
+    return allChars;
   });
 
   ipcMain.on("backup-save", (event, arg: string) => {
@@ -116,4 +117,25 @@ function backupFile(dir: string) {
       console.log("Backup success");
     }
   });
+}
+
+function getCharFiles(dir: string) {
+  let allCharData: string[] = [];
+  const charFolder = join(dir, "/ATLYSS_Data/profileCollections/");
+  const allFiles = readdirSync(charFolder);
+  const filteredFiles = allFiles.filter(
+    (file) => file.startsWith("atl_characterProfile_") && !file.endsWith("bak")
+  );
+
+  filteredFiles.forEach((file) => {
+    const jsonData = readFileSync(join(charFolder, file), "utf8");
+
+    const charData = JSON.parse(jsonData);
+
+    allCharData.push(charData);
+  });
+
+  console.log(allCharData);
+
+  return allCharData;
 }

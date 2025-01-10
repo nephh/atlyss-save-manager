@@ -5,13 +5,37 @@ const pathChangeBtn = document.getElementById("path-change-btn");
 const table = document.getElementById(
   "inventory-items"
 ) as HTMLTableSectionElement;
+const selector = document.getElementById("char-select") as HTMLSelectElement;
 
-window.api.getCharData().then((charData: CharData) => {
-  console.log(charData);
-  charName!.innerText = charData._nickName;
-  currency!.innerText = charData._currency;
+window.api.getCharData().then((charData: CharData[]) => {
+  charData.forEach((char: CharData) => {
+    const option = document.createElement("option");
+    option.text = char._nickName;
+    selector.add(option);
+  });
 
-  charData._inventoryProfile.forEach((item: InventoryItem) => {
+  selector.addEventListener("change", () => {
+    const selectedChar = charData[selector.selectedIndex];
+    charName!.innerText = selectedChar._nickName;
+    currency!.innerText = selectedChar._currency;
+
+    if (table.rows.length > 0) {
+      table.deleteRow(0);
+    }
+
+    selectedChar._inventoryProfile.forEach((item: InventoryItem) => {
+      const row = table.insertRow();
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      cell1.innerText = item._itemName;
+      cell2.innerText = item._quantity.toString();
+    });
+  });
+
+  charName!.innerText = charData[0]._nickName;
+  currency!.innerText = charData[0]._currency;
+
+  charData[0]._inventoryProfile.forEach((item: InventoryItem) => {
     console.log("Item Name:", item._itemName);
     console.log("Quantity:", item._quantity);
     const row = table.insertRow();

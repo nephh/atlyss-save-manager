@@ -1,5 +1,5 @@
 export interface ElectronAPI {
-  getCharData: () => Promise<CharData>;
+  getCharData: () => Promise<AllCharData>;
   backupSave: (arg: string) => void;
   changePath: () => void;
 }
