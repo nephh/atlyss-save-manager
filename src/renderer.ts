@@ -67,6 +67,13 @@ table!.addEventListener("dblclick", (event) => {
 
     input.addEventListener("blur", () => {
       target.innerText = input.value;
+      // Update the actual data
+      const itemCell = target.parentElement as HTMLTableRowElement;
+
+      console.log("Item Name: ", itemCell.cells[0].innerText);
+      const itemName = itemCell.cells[0].innerText;
+
+      window.api.updateItem(itemName, selector.selectedIndex);
     });
 
     input.addEventListener("keydown", (event) => {

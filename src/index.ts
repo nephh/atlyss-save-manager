@@ -50,6 +50,18 @@ app.whenReady().then(() => {
     return allChars;
   });
 
+  ipcMain.on("update-item", (event, itemName: string, charNumber: number) => {
+    console.log(
+      "Item updated with value:",
+      itemName,
+      "On character: ",
+      charNumber
+    );
+
+    // Implement a function to actually update the item in the character file here...
+    // updateItem(itemName, charNumber);
+  });
+
   ipcMain.on("backup-save", (event, arg: string) => {
     const dir = settings.get("directory.path");
 
