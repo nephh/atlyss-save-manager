@@ -50,17 +50,21 @@ app.whenReady().then(() => {
     return allChars;
   });
 
-  ipcMain.on("update-item", (event, itemName: string, charNumber: number) => {
-    console.log(
-      "Item updated with value:",
-      itemName,
-      "On character: ",
-      charNumber
-    );
+  ipcMain.on(
+    "update-item",
+    async (event, itemName: string, quantity: number, charNumber: number) => {
+      console.log(
+        itemName,
+        "updated with value:",
+        quantity,
+        "On character: ",
+        charNumber
+      );
 
-    // Implement a function to actually update the item in the character file here...
-    // updateItem(itemName, charNumber);
-  });
+      // Implement a function to actually update the item in the character file here...
+      await updateItem(itemName, quantity, charNumber);
+    }
+  );
 
   ipcMain.on("backup-save", (event, arg: string) => {
     const dir = settings.get("directory.path");
@@ -147,7 +151,50 @@ function getCharFiles(dir: string) {
     allCharData.push(charData);
   });
 
-  console.log(allCharData);
-
   return allCharData;
+}
+
+async function updateItem(
+  itemName: string,
+  quantity: number,
+  charNumber: number
+) {
+  // Implement a function to actually update the item in the character file here...
+  const dir = await settings.get("directory.path");
+  if (!dir) {
+    dialog.showErrorBox(
+      "Error",
+      "Please set the directory before attempting to update an item"
+    );
+    return;
+  }
+
+  const charData = getChar(dir.toString(), charNumber);
+
+  console.log("CharData: ", charData);
+
+  const item = charData._inventoryProfile.find(
+    (item: InventoryItem) => item._itemName === itemName
+  );
+
+  console.log("Item found: ", item);
+
+  item._quantity = quantity;
+
+  const updatedData = JSON.stringify(charData);
+
+  writeFile(
+    join(
+      dir.toString(),
+      `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNumber}`
+    ),
+    updatedData,
+    (err) => {
+      if (err) {
+        console.log("Error updating item:", err);
+      } else {
+        console.log("Item updated successfully");
+      }
+    }
+  );
 }

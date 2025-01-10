@@ -20,7 +20,9 @@ window.api.getCharData().then((charData: CharData[]) => {
     currency!.innerText = selectedChar._currency;
 
     if (table.rows.length > 0) {
-      table.deleteRow(0);
+      while (table.rows.length > 0) {
+        table.deleteRow(0);
+      }
     }
 
     selectedChar._inventoryProfile.forEach((item: InventoryItem) => {
@@ -72,8 +74,9 @@ table!.addEventListener("dblclick", (event) => {
 
       console.log("Item Name: ", itemCell.cells[0].innerText);
       const itemName = itemCell.cells[0].innerText;
+      const quantity = parseInt(input.value);
 
-      window.api.updateItem(itemName, selector.selectedIndex);
+      window.api.updateItem(itemName, quantity, selector.selectedIndex);
     });
 
     input.addEventListener("keydown", (event) => {
