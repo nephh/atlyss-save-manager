@@ -1,7 +1,13 @@
 import { app, BrowserWindow, dialog, ipcMain } from "electron";
 import { join } from "node:path";
 import settings from "electron-settings";
-import { getDir, backupFile, getCharFiles, updateItem } from "./utils";
+import {
+    getDir,
+    backupFile,
+    getCharFiles,
+    updateItem,
+    saveFile,
+} from "./utils";
 
 let win: BrowserWindow;
 
@@ -49,11 +55,11 @@ app.whenReady().then(async () => {
                 charNumber,
             );
 
-            await updateItem(dir, itemName, quantity, charNumber);
+            await updateItem(dir, itemName, quantity, charNumber, allChars);
         },
     );
 
-    ipcMain.on("backup-save", (event, arg: string) => {
+    ipcMain.on("backup-save", () => {
         backupFile(dir);
     });
 
@@ -73,6 +79,10 @@ app.whenReady().then(async () => {
 
         allChars = getCharFiles(dir[0]);
         win.reload();
+    });
+
+    ipcMain.on("save-file", (event, charNum) => {
+        saveFile(dir, charNum, allChars);
     });
 });
 

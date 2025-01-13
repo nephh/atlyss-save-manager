@@ -7,6 +7,7 @@ export interface ElectronAPI {
         quantity: number,
         charNumber: number,
     ) => void;
+    saveFile: (charNum: number) => void;
 }
 
 // Electron is weird about importing types in the renderer, so we

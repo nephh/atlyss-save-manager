@@ -110,6 +110,7 @@ export async function updateItem(
     itemName: string,
     quantity: number,
     charNumber: number,
+    allChars: CharData[],
 ) {
     const charData = getChar(dir, charNumber);
 
@@ -126,19 +127,21 @@ export async function updateItem(
 
     item._quantity = quantity;
 
-    const updatedData = JSON.stringify(charData);
+    allChars[charNumber] = charData;
+}
 
+export function saveFile(dir: string, charNumber: number, data: CharData[]) {
     writeFile(
         join(
             dir.toString(),
             `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNumber}`,
         ),
-        updatedData,
+        JSON.stringify(data[charNumber], null, 2),
         (err) => {
             if (err) {
-                console.log("Error updating item:", err);
+                console.log("Error saving file:", err);
             } else {
-                console.log("Item updated successfully");
+                console.log("File saved successfully");
             }
         },
     );

@@ -6,6 +6,7 @@ const table = document.getElementById(
     "inventory-items",
 ) as HTMLTableSectionElement;
 const selector = document.getElementById("char-select") as HTMLSelectElement;
+const saveBtn = document.getElementById("save-btn");
 
 window.api.getCharData().then((charData: CharData[]) => {
     charData.forEach((char: CharData) => {
@@ -85,4 +86,8 @@ table!.addEventListener("dblclick", (event) => {
             }
         });
     }
+});
+
+saveBtn!.addEventListener("click", () => {
+    window.api.saveFile(selector.selectedIndex);
 });
