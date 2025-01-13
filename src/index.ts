@@ -7,6 +7,7 @@ import {
     getCharFiles,
     updateItem,
     saveFile,
+    replaceFile,
 } from "./utils";
 
 let win: BrowserWindow;
@@ -31,12 +32,14 @@ app.whenReady().then(async () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 
+    let currentChar = 0;
+
     const dir = await getDir();
 
     let allChars = getCharFiles(dir);
 
     ipcMain.handle("get-char-data", () => {
-        return allChars;
+        return { allChars, currentChar };
     });
 
     ipcMain.on(
@@ -83,6 +86,12 @@ app.whenReady().then(async () => {
 
     ipcMain.on("save-file", (event, charNum) => {
         saveFile(dir, charNum, allChars);
+    });
+
+    ipcMain.on("replace-file", (event, charNum) => {
+        replaceFile(dir, charNum, allChars);
+        currentChar = charNum;
+        win.reload();
     });
 });
 

@@ -7,16 +7,18 @@ const table = document.getElementById(
 ) as HTMLTableSectionElement;
 const selector = document.getElementById("char-select") as HTMLSelectElement;
 const saveBtn = document.getElementById("save-btn");
+const replaceBtn = document.getElementById("replace-btn");
 
-window.api.getCharData().then((charData: CharData[]) => {
-    charData.forEach((char: CharData) => {
+window.api.getCharData().then(({ allChars, currentChar }) => {
+    allChars.forEach((char: CharData) => {
         const option = document.createElement("option");
         option.text = char._nickName;
         selector.add(option);
     });
+    selector.selectedIndex = currentChar;
 
     selector.addEventListener("change", () => {
-        const selectedChar = charData[selector.selectedIndex];
+        const selectedChar = allChars[selector.selectedIndex];
         charName!.innerText = selectedChar._nickName;
         currency!.innerText = selectedChar._currency;
 
@@ -35,10 +37,10 @@ window.api.getCharData().then((charData: CharData[]) => {
         });
     });
 
-    charName!.innerText = charData[0]._nickName;
-    currency!.innerText = charData[0]._currency;
+    charName!.innerText = allChars[currentChar]._nickName;
+    currency!.innerText = allChars[currentChar]._currency;
 
-    charData[0]._inventoryProfile.forEach((item: InventoryItem) => {
+    allChars[currentChar]._inventoryProfile.forEach((item: InventoryItem) => {
         console.log("Item Name:", item._itemName);
         console.log("Quantity:", item._quantity);
         const row = table.insertRow();
@@ -90,4 +92,8 @@ table!.addEventListener("dblclick", (event) => {
 
 saveBtn!.addEventListener("click", () => {
     window.api.saveFile(selector.selectedIndex);
+});
+
+replaceBtn!.addEventListener("click", () => {
+    window.api.replaceFile(selector.selectedIndex);
 });

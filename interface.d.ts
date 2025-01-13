@@ -1,5 +1,5 @@
 export interface ElectronAPI {
-    getCharData: () => Promise<AllCharData>;
+    getCharData: () => Promise<CurrentChars>;
     backupSave: (arg: string) => void;
     changePath: () => void;
     updateItem: (
@@ -8,6 +8,12 @@ export interface ElectronAPI {
         charNumber: number,
     ) => void;
     saveFile: (charNum: number) => void;
+    replaceFile: (charNum: number) => void;
+}
+
+interface CurrentChars {
+    allChars: CharData[];
+    currentChar: number;
 }
 
 // Electron is weird about importing types in the renderer, so we

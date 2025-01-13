@@ -146,3 +146,40 @@ export function saveFile(dir: string, charNumber: number, data: CharData[]) {
         },
     );
 }
+
+export function replaceFile(
+    dir: string,
+    charNumber: number,
+    allChars: CharData[],
+) {
+    if (!existsSync(`./backups/atl_characterProfile_${charNumber}`)) {
+        dialog.showErrorBox(
+            "Error!",
+            "No backup found for this character. Please backup the character first.",
+        );
+        return;
+    }
+
+    const backupFile = readFileSync(
+        `./backups/atl_characterProfile_${charNumber}`,
+        "utf8",
+    );
+
+    console.log("Backup file: ", backupFile);
+    writeFile(
+        join(
+            dir.toString(),
+            `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNumber}`,
+        ),
+        backupFile,
+        (err) => {
+            if (err) {
+                console.log("Error replacing file:", err);
+            } else {
+                console.log("File replaced successfully");
+            }
+        },
+    );
+
+    allChars[charNumber] = JSON.parse(backupFile);
+}
