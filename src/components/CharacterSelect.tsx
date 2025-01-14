@@ -1,6 +1,4 @@
-import React from "react";
-
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function CharacterSelect() {
     const [charData, setCharData] = useState({ allChars: [], currentChar: 0 });
