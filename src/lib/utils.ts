@@ -77,7 +77,7 @@ export function backupFile(dir: string, charNum: number) {
 }
 
 export function getCharFiles(dir: string): CharData[] {
-    let allCharData: CharData[] = [];
+    const allCharData: CharData[] = [];
     const charFolder = join(dir, "/ATLYSS_Data/profileCollections/");
 
     if (!existsSync(charFolder)) {
