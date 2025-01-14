@@ -52,7 +52,7 @@ window.api.getCharData().then(({ allChars, currentChar }) => {
 });
 
 backupBtn!.addEventListener("click", () => {
-    window.api.backupSave("This would be the current file");
+    window.api.backupSave(selector.selectedIndex);
 });
 
 pathChangeBtn!.addEventListener("click", () => {

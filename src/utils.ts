@@ -44,11 +44,13 @@ export function getChar(dir: string, character: number): CharData {
     return charData;
 }
 
-export function backupFile(dir: string) {
+export function backupFile(dir: string, charNum: number) {
     const charFile = join(
         dir,
-        "/ATLYSS_Data/profileCollections/atl_characterProfile_1",
+        `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNum}`,
     );
+
+    console.log("Char file: ", charFile);
 
     if (!existsSync(charFile)) {
         dialog.showErrorBox(
@@ -65,7 +67,7 @@ export function backupFile(dir: string) {
         mkdirSync("./backups", { recursive: true });
     }
 
-    writeFile("./backups/atl_characterProfile_1", jsonData, (err) => {
+    writeFile(`./backups/atl_characterProfile_${charNum}`, jsonData, (err) => {
         if (err) {
             console.log("Error creating backup:", err);
         } else {

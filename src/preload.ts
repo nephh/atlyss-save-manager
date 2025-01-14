@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("api", {
     getCharData: () => ipcRenderer.invoke("get-char-data"),
-    backupSave: () => ipcRenderer.send("backup-save"),
+    backupSave: (charNum: number) => ipcRenderer.send("backup-save", charNum),
     changePath: () => ipcRenderer.send("change-path"),
     saveFile: (charNum: number) => ipcRenderer.send("save-file", charNum),
     replaceFile: (charNum: number) => ipcRenderer.send("replace-file", charNum),

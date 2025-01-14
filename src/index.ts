@@ -35,7 +35,6 @@ app.whenReady().then(async () => {
     let currentChar = 0;
 
     const dir = await getDir();
-
     let allChars = getCharFiles(dir);
 
     ipcMain.handle("get-char-data", () => {
@@ -50,20 +49,12 @@ app.whenReady().then(async () => {
             quantity: number,
             charNumber: number,
         ) => {
-            console.log(
-                itemName,
-                "updated with value:",
-                quantity,
-                "On character: ",
-                charNumber,
-            );
-
             await updateItem(dir, itemName, quantity, charNumber, allChars);
         },
     );
 
-    ipcMain.on("backup-save", () => {
-        backupFile(dir);
+    ipcMain.on("backup-save", (event, charNum) => {
+        backupFile(dir, charNum);
     });
 
     ipcMain.on("change-path", () => {
