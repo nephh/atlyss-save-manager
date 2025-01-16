@@ -12,6 +12,7 @@ export default function CharacterSelect({
     setSelectedChar,
 }: CharacterSelectProps) {
     const selectRef = React.createRef<HTMLSelectElement>();
+
     useEffect(() => {
         const select = selectRef.current;
 
@@ -29,7 +30,8 @@ export default function CharacterSelect({
         return () => {
             select.removeEventListener("change", handleChange);
         };
-    }, [selectRef, setSelectedChar]);
+    }, [setSelectedChar]);
+
     return (
         <div>
             <select ref={selectRef}>

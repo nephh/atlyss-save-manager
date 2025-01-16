@@ -7,7 +7,7 @@ export interface ElectronAPI {
         quantity: number,
         charNumber: number
     ) => void;
-    saveFile: (charNum: number) => void;
+    saveFile: (charData: CharData[], charNum: number) => void;
     replaceFile: (charNum: number) => void;
 }
 

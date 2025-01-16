@@ -6,18 +6,17 @@ import Table from "../components/Table";
 export default function Manager() {
     const [charData, setCharData] = useState<CharData[]>([]);
     const [selectedChar, setSelectedChar] = useState(0);
+    const [hasChanged, setHasChanged] = useState(false);
 
     async function fetchData() {
         const data = await window.api.getCharData();
         setCharData(data);
     }
 
-    // We might not need to put fetchData in the useEffect, but it might be necessary once we start changing
-    // the data and want to display the changes
-    //
     useEffect(() => {
         fetchData();
-    }, []);
+        setHasChanged(false);
+    }, [selectedChar, hasChanged === true]);
 
     if (charData.length === 0) {
         return <h1>Loading...</h1>;
@@ -30,8 +29,16 @@ export default function Manager() {
                 selectedChar={selectedChar}
                 setSelectedChar={setSelectedChar}
             />
-            <ButtonSection selectedChar={selectedChar} />
-            <Table allChars={charData} selectedChar={selectedChar} />
+            <ButtonSection
+                selectedChar={selectedChar}
+                charData={charData}
+                setHasChanged={setHasChanged}
+            />
+            <Table
+                allChars={charData}
+                selectedChar={selectedChar}
+                setCharData={setCharData}
+            />
         </>
     );
 }

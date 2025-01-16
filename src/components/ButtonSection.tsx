@@ -2,9 +2,19 @@ import React from "react";
 
 interface ButtonSectionProps {
     selectedChar: number;
+    charData: CharData[];
+    setHasChanged: (hasChanged: boolean) => void;
 }
 
-export default function ButtonSection({ selectedChar }: ButtonSectionProps) {
+export default function ButtonSection({
+    selectedChar,
+    charData,
+    setHasChanged,
+}: ButtonSectionProps) {
+    function handleReplaceBtn() {
+        window.api.replaceFile(selectedChar);
+        setHasChanged(true);
+    }
     return (
         <>
             <button
@@ -13,14 +23,16 @@ export default function ButtonSection({ selectedChar }: ButtonSectionProps) {
             >
                 Backup Save
             </button>
-            <button
-                id="replace-btn"
-                onClick={() => window.api.replaceFile(selectedChar)}
-            >
+            <button id="replace-btn" onClick={() => handleReplaceBtn()}>
                 Replace Game Save With Backup
             </button>
             <button id="path-change-btn">Change ATLYSS Install Path</button>
-            <button id="save-btn">Save Changes</button>
+            <button
+                id="save-btn"
+                onClick={() => window.api.saveFile(charData, selectedChar)}
+            >
+                Save Changes
+            </button>
         </>
     );
 }

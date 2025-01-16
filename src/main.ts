@@ -71,23 +71,23 @@ app.whenReady().then(async () => {
     // let currentChar = 0;
 
     const dir = await getDir();
-    let allChars = getCharFiles(dir);
 
     ipcMain.handle("get-char-data", () => {
-        return allChars;
+        return getCharFiles(dir);
     });
-
-    ipcMain.on(
-        "update-item",
-        async (
-            event,
-            itemName: string,
-            quantity: number,
-            charNumber: number
-        ) => {
-            await updateItem(dir, itemName, quantity, charNumber, allChars);
-        }
-    );
+    // This is now unnecessary because we are only saving the item changes when "save" is clicked
+    //
+    // ipcMain.on(
+    //     "update-item",
+    //     async (
+    //         event,
+    //         itemName: string,
+    //         quantity: number,
+    //         charNumber: number
+    //     ) => {
+    //         await updateItem(dir, itemName, quantity, charNumber, allChars);
+    //     }
+    // );
 
     ipcMain.on("backup-save", (event, charNum) => {
         backupFile(dir, charNum);
@@ -107,16 +107,16 @@ app.whenReady().then(async () => {
             path: dir[0],
         });
 
-        allChars = getCharFiles(dir[0]);
+        getCharFiles(dir[0]);
         mainWindow.reload();
     });
 
-    ipcMain.on("save-file", (event, charNum) => {
-        saveFile(dir, charNum, allChars);
+    ipcMain.on("save-file", (event, charData, charNum) => {
+        saveFile(dir, charData, charNum);
     });
 
     ipcMain.on("replace-file", (event, charNum) => {
-        replaceFile(dir, charNum, allChars);
+        replaceFile(dir, charNum);
         // currentChar = charNum;
         // mainWindow.reload();
     });
