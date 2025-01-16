@@ -1,14 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CharacterSelect from "./components/CharacterSelect";
+import ButtonSection from "./components/ButtonSection";
 
 export default function Manager() {
+    const [charData, setCharData] = useState({ allChars: [], currentChar: 0 });
+    const selectRef = React.createRef<HTMLSelectElement>();
+
+    useEffect(() => {
+        async function fetchData() {
+            const data = await window.api.getCharData();
+            setCharData(data);
+        }
+        fetchData();
+    }, []);
+
     return (
         <>
-            <CharacterSelect />
-            <button id="backup-btn">Backup Save</button>
-            <button id="replace-btn">Replace Game Save With Backup</button>
-            <button id="path-change-btn">Change ATLYSS Install Path</button>
-            <button id="save-btn">Save Changes</button>
+            <CharacterSelect
+                allChars={charData.allChars}
+                selectRef={selectRef}
+            />
+            <ButtonSection selectRef={selectRef} />
             <table>
                 <thead>
                     <tr>

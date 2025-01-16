@@ -1,29 +1,43 @@
 import React, { useEffect, useState } from "react";
 
-export default function CharacterSelect() {
-    const [charData, setCharData] = useState({ allChars: [], currentChar: 0 });
+interface CharacterSelectProps {
+    allChars: CharData[];
+    selectRef: React.RefObject<HTMLSelectElement>;
+}
+
+export default function CharacterSelect({
+    allChars,
+    selectRef,
+}: CharacterSelectProps) {
+    const [selectedChar, setSelectedChar] = useState(0);
 
     useEffect(() => {
-        async function fetchData() {
-            const data = await window.api.getCharData();
-            setCharData(data);
-        }
-        fetchData();
-    }, []);
+        const select = selectRef.current;
+        if (select) {
+            const handleChange = () => {
+                setSelectedChar(select.selectedIndex);
+            };
 
-    const { allChars, currentChar } = charData;
+            select.addEventListener("change", handleChange);
+
+            // Cleanup event listener on component unmount
+            return () => {
+                select.removeEventListener("change", handleChange);
+            };
+        }
+    }, []);
 
     return (
         <div>
-            <select>
+            <select ref={selectRef}>
                 {allChars.map((char, index) => (
                     <option key={index}>{char._nickName}</option>
                 ))}
             </select>
             {allChars.length > 0 && (
                 <>
-                    <h1>Character Name: {allChars[currentChar]._nickName}</h1>
-                    <p>Currency: {allChars[currentChar]._currency}</p>
+                    <h1>Character Name: {allChars[selectedChar]._nickName}</h1>
+                    <p>Currency: {allChars[selectedChar]._currency}</p>
                 </>
             )}
         </div>
