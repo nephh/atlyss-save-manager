@@ -1,28 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 interface ButtonSectionProps {
-    selectRef: React.RefObject<HTMLSelectElement>;
+    selectedChar: number;
 }
 
-export default function ButtonSection({ selectRef }: ButtonSectionProps) {
-    const [selectedChar, setSelectedChar] = useState(0);
-
-    useEffect(() => {
-        const select = selectRef.current;
-
-        if (select) {
-            const handleChange = () => {
-                setSelectedChar(select.selectedIndex);
-            };
-
-            select.addEventListener("change", handleChange);
-
-            return () => {
-                select.removeEventListener("change", handleChange);
-            };
-        }
-    });
-
+export default function ButtonSection({ selectedChar }: ButtonSectionProps) {
     return (
         <>
             <button
@@ -31,7 +13,12 @@ export default function ButtonSection({ selectRef }: ButtonSectionProps) {
             >
                 Backup Save
             </button>
-            <button id="replace-btn">Replace Game Save With Backup</button>
+            <button
+                id="replace-btn"
+                onClick={() => window.api.replaceFile(selectedChar)}
+            >
+                Replace Game Save With Backup
+            </button>
             <button id="path-change-btn">Change ATLYSS Install Path</button>
             <button id="save-btn">Save Changes</button>
         </>

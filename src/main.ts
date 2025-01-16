@@ -25,7 +25,6 @@ const createWindow = () => {
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
-            nodeIntegration: true,
         },
     });
 
@@ -69,13 +68,13 @@ app.whenReady().then(async () => {
 
     // In this file you can include the rest of your app's specific main process
     // code. You can also put them in separate files and import them here.
-    let currentChar = 0;
+    // let currentChar = 0;
 
     const dir = await getDir();
     let allChars = getCharFiles(dir);
 
     ipcMain.handle("get-char-data", () => {
-        return { allChars, currentChar };
+        return allChars;
     });
 
     ipcMain.on(
@@ -118,7 +117,7 @@ app.whenReady().then(async () => {
 
     ipcMain.on("replace-file", (event, charNum) => {
         replaceFile(dir, charNum, allChars);
-        currentChar = charNum;
-        mainWindow.reload();
+        // currentChar = charNum;
+        // mainWindow.reload();
     });
 });
