@@ -32,6 +32,7 @@ export default function Manager() {
                 selectedChar={selectedChar}
                 setSelectedChar={setSelectedChar}
                 dataChanged={dataChanged}
+                setDataChanged={setDataChanged}
             />
             <ButtonSection
                 selectedChar={selectedChar}

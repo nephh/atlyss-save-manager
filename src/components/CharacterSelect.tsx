@@ -12,6 +12,7 @@ interface CharacterSelectProps {
     selectedChar: number;
     setSelectedChar: (index: number) => void;
     dataChanged: boolean;
+    setDataChanged: (changed: boolean) => void;
 }
 
 export default function CharacterSelect({
@@ -19,6 +20,7 @@ export default function CharacterSelect({
     selectedChar,
     setSelectedChar,
     dataChanged,
+    setDataChanged,
 }: CharacterSelectProps) {
     const selectRef = createRef<HTMLSelectElement>();
 
@@ -44,6 +46,8 @@ export default function CharacterSelect({
                 //         </AlertDialogFooter>
                 //     </AlertDialogContent>
                 // </AlertDialog>;
+                select.selectedIndex = selectedChar;
+                setDataChanged(false);
                 return;
             }
             setSelectedChar(select.selectedIndex);
