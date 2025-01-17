@@ -19,7 +19,7 @@ export default function ButtonSection({
     return (
         <>
             <button
-                className="bg-zinc-800 text-zinc-200 rounded-md p-2"
+                className="rounded-md bg-zinc-800 p-2 text-zinc-200"
                 id="backup-btn"
                 onClick={() => window.api.backupSave(selectedChar)}
             >
