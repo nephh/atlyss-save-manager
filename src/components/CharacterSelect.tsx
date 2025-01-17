@@ -4,12 +4,14 @@ interface CharacterSelectProps {
     allChars: CharData[];
     selectedChar: number;
     setSelectedChar: (index: number) => void;
+    dataChanged: boolean;
 }
 
 export default function CharacterSelect({
     allChars,
     selectedChar,
     setSelectedChar,
+    dataChanged,
 }: CharacterSelectProps) {
     const selectRef = React.createRef<HTMLSelectElement>();
 
@@ -21,6 +23,10 @@ export default function CharacterSelect({
         }
 
         function handleChange() {
+            if (dataChanged) {
+                
+                return;
+            }
             setSelectedChar(select.selectedIndex);
         }
 
@@ -30,7 +36,7 @@ export default function CharacterSelect({
         return () => {
             select.removeEventListener("change", handleChange);
         };
-    }, [setSelectedChar]);
+    }, [setSelectedChar, dataChanged]);
 
     return (
         <div>

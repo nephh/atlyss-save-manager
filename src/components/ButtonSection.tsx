@@ -23,6 +23,7 @@ export default function ButtonSection({
             >
                 Backup Save
             </button>
+            {/* Change this to restore backup */}
             <button id="replace-btn" onClick={() => handleReplaceBtn()}>
                 Replace Game Save With Backup
             </button>

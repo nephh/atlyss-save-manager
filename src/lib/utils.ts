@@ -1,6 +1,8 @@
 import { join } from "path";
 import { dialog } from "electron";
 import settings from "electron-settings";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import {
     readFileSync,
     existsSync,
@@ -8,6 +10,10 @@ import {
     writeFile,
     readdirSync,
 } from "fs";
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs));
+}
 
 export async function getDir() {
     let dir = await settings.get("directory.path");
@@ -34,7 +40,7 @@ export async function getDir() {
 export function getChar(dir: string, character: number): CharData {
     const charFile = join(
         dir,
-        `/ATLYSS_Data/profileCollections/atl_characterProfile_${character}`
+        `/ATLYSS_Data/profileCollections/atl_characterProfile_${character}`,
     );
 
     const jsonData = readFileSync(charFile, "utf8");
@@ -47,7 +53,7 @@ export function getChar(dir: string, character: number): CharData {
 export function backupFile(dir: string, charNum: number) {
     const charFile = join(
         dir,
-        `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNum}`
+        `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNum}`,
     );
 
     console.log("Char file: ", charFile);
@@ -56,7 +62,7 @@ export function backupFile(dir: string, charNum: number) {
         dialog.showErrorBox(
             "Error!",
             `No character file found. Please make sure to select the ATLYSS install directory. \n
-            This is usually: Steam\\steamapps\\common\\ATLYSS\\`
+            This is usually: Steam\\steamapps\\common\\ATLYSS\\`,
         );
         return;
     }
@@ -84,7 +90,7 @@ export function getCharFiles(dir: string): CharData[] {
         dialog.showErrorBox(
             "Error!",
             `No character files found. Please make sure to select the ATLYSS install directory. \n
-            This is usually: Steam\\steamapps\\common\\ATLYSS\\`
+            This is usually: Steam\\steamapps\\common\\ATLYSS\\`,
         );
         return [];
     }
@@ -93,7 +99,7 @@ export function getCharFiles(dir: string): CharData[] {
 
     const filteredFiles = allFiles.filter(
         (file) =>
-            file.startsWith("atl_characterProfile_") && !file.endsWith("bak")
+            file.startsWith("atl_characterProfile_") && !file.endsWith("bak"),
     );
 
     filteredFiles.forEach((file) => {
@@ -112,12 +118,12 @@ export async function updateItem(
     itemName: string,
     quantity: number,
     charNumber: number,
-    allChars: CharData[]
+    allChars: CharData[],
 ) {
     const charData = getChar(dir, charNumber);
 
     const item = charData._inventoryProfile.find(
-        (item: InventoryItem) => item._itemName === itemName
+        (item: InventoryItem) => item._itemName === itemName,
     );
 
     if (!item) {
@@ -136,7 +142,7 @@ export function saveFile(dir: string, data: CharData[], charNumber: number) {
     writeFile(
         join(
             dir.toString(),
-            `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNumber}`
+            `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNumber}`,
         ),
         JSON.stringify(data[charNumber], null, 2),
         (err) => {
@@ -145,7 +151,7 @@ export function saveFile(dir: string, data: CharData[], charNumber: number) {
             } else {
                 console.log("File saved successfully");
             }
-        }
+        },
     );
 }
 
@@ -153,20 +159,20 @@ export function replaceFile(dir: string, charNumber: number) {
     if (!existsSync(`./backups/atl_characterProfile_${charNumber}`)) {
         dialog.showErrorBox(
             "Error!",
-            "No backup found for this character. Please backup the character first."
+            "No backup found for this character. Please backup the character first.",
         );
         return;
     }
 
     const backupFile = readFileSync(
         `./backups/atl_characterProfile_${charNumber}`,
-        "utf8"
+        "utf8",
     );
 
     writeFile(
         join(
             dir.toString(),
-            `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNumber}`
+            `/ATLYSS_Data/profileCollections/atl_characterProfile_${charNumber}`,
         ),
         backupFile,
         (err) => {
@@ -175,6 +181,6 @@ export function replaceFile(dir: string, charNumber: number) {
             } else {
                 console.log("File replaced successfully");
             }
-        }
+        },
     );
 }

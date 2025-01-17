@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import CharacterSelect from "../components/CharacterSelect";
+import CharacterSelect from "@/components/CharacterSelect";
 import ButtonSection from "../components/ButtonSection";
 import Table from "../components/Table";
 
 export default function Manager() {
     const [charData, setCharData] = useState<CharData[]>([]);
     const [selectedChar, setSelectedChar] = useState(0);
+    const [dataChanged, setDataChanged] = useState(false);
+
+    // Change this to restored and setRestored backup or something
     const [hasChanged, setHasChanged] = useState(false);
 
     async function fetchData() {
@@ -28,6 +31,7 @@ export default function Manager() {
                 allChars={charData}
                 selectedChar={selectedChar}
                 setSelectedChar={setSelectedChar}
+                dataChanged={dataChanged}
             />
             <ButtonSection
                 selectedChar={selectedChar}
@@ -38,6 +42,7 @@ export default function Manager() {
                 allChars={charData}
                 selectedChar={selectedChar}
                 setCharData={setCharData}
+                setDataChanged={setDataChanged}
             />
         </>
     );

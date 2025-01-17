@@ -1,16 +1,18 @@
-import { dialog } from "electron";
+import { set } from "electron-settings";
 import React from "react";
 
 interface TableProps {
     allChars: CharData[];
     selectedChar: number;
     setCharData: (data: CharData[]) => void;
+    setDataChanged: (dataChanged: boolean) => void;
 }
 
 export default function Table({
     allChars,
     selectedChar,
     setCharData,
+    setDataChanged,
 }: TableProps) {
     function handleClick(
         e: React.MouseEvent<HTMLTableCellElement, MouseEvent>
@@ -38,17 +40,10 @@ export default function Table({
                 (item) => item._itemName === itemName
             );
 
-            // if (!item) {
-            //     dialog.showErrorBox(
-            //         "Error!",
-            //         "Item not found in character inventory"
-            //     );
-            //     return;
-            // }
-
             item._quantity = quantity;
 
             setCharData(newCharData);
+            setDataChanged(true);
             // window.api.updateItem(itemName, quantity, selectedChar);
         });
 
