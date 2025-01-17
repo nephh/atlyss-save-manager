@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import React from "react";
 
 interface ButtonSectionProps {
@@ -18,6 +19,7 @@ export default function ButtonSection({
     return (
         <>
             <button
+                className="bg-zinc-800 text-zinc-200 rounded-md p-2"
                 id="backup-btn"
                 onClick={() => window.api.backupSave(selectedChar)}
             >

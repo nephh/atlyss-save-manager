@@ -1,4 +1,11 @@
-import React, { useEffect } from "react";
+import React, { createRef, useEffect } from "react";
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+} from "./ui/alert-dialog";
 
 interface CharacterSelectProps {
     allChars: CharData[];
@@ -13,7 +20,7 @@ export default function CharacterSelect({
     setSelectedChar,
     dataChanged,
 }: CharacterSelectProps) {
-    const selectRef = React.createRef<HTMLSelectElement>();
+    const selectRef = createRef<HTMLSelectElement>();
 
     useEffect(() => {
         const select = selectRef.current;
@@ -24,7 +31,19 @@ export default function CharacterSelect({
 
         function handleChange() {
             if (dataChanged) {
-                
+                // <AlertDialog>
+                //     <AlertDialogContent>
+                //         <AlertDialogHeader>Save Changes?</AlertDialogHeader>
+                //         <AlertDialogDescription>
+                //             You have unsaved changes. Would you like to save
+                //             them before switching characters?
+                //         </AlertDialogDescription>
+                //         <AlertDialogFooter>
+                //             <button>Save Changes</button>
+                //             <button>Discard Changes</button>
+                //         </AlertDialogFooter>
+                //     </AlertDialogContent>
+                // </AlertDialog>;
                 return;
             }
             setSelectedChar(select.selectedIndex);

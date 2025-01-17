@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CharacterSelect from "@/components/CharacterSelect";
-import ButtonSection from "../components/ButtonSection";
-import Table from "../components/Table";
+import ButtonSection from "@/components/ButtonSection";
+import Table from "@/components/Table";
 
 export default function Manager() {
     const [charData, setCharData] = useState<CharData[]>([]);
