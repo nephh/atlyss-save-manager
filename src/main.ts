@@ -1,15 +1,14 @@
-import { app, BrowserWindow, dialog, ipcMain } from "electron";
+import { app, BrowserWindow, dialog, ipcMain, screen } from "electron";
 import path from "path";
 import started from "electron-squirrel-startup";
 import settings from "electron-settings";
 import {
     getDir,
     getCharFiles,
-    updateItem,
     backupFile,
     saveFile,
     replaceFile,
-} from "./lib/utils";
+} from "./lib/helpers";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -20,9 +19,12 @@ let mainWindow: BrowserWindow;
 
 const createWindow = () => {
     // Create the browser window.
+    const primaryDisplay = screen.getPrimaryDisplay();
+    const { width, height } = primaryDisplay.workAreaSize;
+
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: width / 2,
+        height: height / 2,
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
         },
@@ -75,19 +77,6 @@ app.whenReady().then(async () => {
     ipcMain.handle("get-char-data", () => {
         return getCharFiles(dir);
     });
-    // This is now unnecessary because we are only saving the item changes when "save" is clicked
-    //
-    // ipcMain.on(
-    //     "update-item",
-    //     async (
-    //         event,
-    //         itemName: string,
-    //         quantity: number,
-    //         charNumber: number
-    //     ) => {
-    //         await updateItem(dir, itemName, quantity, charNumber, allChars);
-    //     }
-    // );
 
     ipcMain.on("backup-save", (event, charNum) => {
         backupFile(dir, charNum);

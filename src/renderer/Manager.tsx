@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import CharacterSelect from "@/components/CharacterSelect";
 import ButtonSection from "@/components/ButtonSection";
 import Table from "@/components/Table";
+import ThemeToggle from "@/components/ThemeToggle";
 
 export default function Manager() {
     const [charData, setCharData] = useState<CharData[]>([]);
@@ -27,6 +28,7 @@ export default function Manager() {
 
     return (
         <>
+            <ThemeToggle />
             <CharacterSelect
                 allChars={charData}
                 selectedChar={selectedChar}

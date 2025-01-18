@@ -18,13 +18,13 @@ export default function ButtonSection({
     }
     return (
         <>
-            <button
-                className="rounded-md bg-zinc-800 p-2 text-zinc-200"
+            <Button
+                variant="outline"
                 id="backup-btn"
                 onClick={() => window.api.backupSave(selectedChar)}
             >
                 Backup Save
-            </button>
+            </Button>
             {/* Change this to restore backup */}
             <button id="replace-btn" onClick={() => handleReplaceBtn()}>
                 Replace Game Save With Backup

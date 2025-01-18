@@ -1,13 +1,10 @@
 {
     "compilerOptions": {
-        "target": "es2019",
+        "target": "ESNext",
         "module": "commonjs",
-        "allowJs": false,
-        "lib": ["es2019", "dom"],
-        "experimentalDecorators": true,
-        "composite": true,
-        "declaration": true,
-        "forceConsistentCasingInFileNames": true,
+        "allowJs": true,
+        "jsx": "react-jsx",
+        "skipLibCheck": true,
         "esModuleInterop": true,
         "noImplicitAny": true,
         "sourceMap": true,
@@ -15,9 +12,8 @@
         "outDir": "dist",
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "jsx": "react",
         "paths": {
-            "@/*": ["src/*"]
+            "@/*": ["./src/*"]
         }
     }
 }
